@@ -1,6 +1,6 @@
 import React from 'react'
 import {connect} from 'react-redux'
-import { buttonActions } from '../actions/buttonActions'
+import { increasClickedNumber, addNewButton } from '../actions/buttonActions'
 
 @connect((store) => (
   {
@@ -10,36 +10,33 @@ import { buttonActions } from '../actions/buttonActions'
 export default class App extends React.Component {
 
   handleButtonClick = (e) => {
-    this.props.dispatch(buttonActions(e.currentTarget.dataset.buttonid));
-    // console.log(e.currentTarget.dataset.button);
+    this.props.dispatch(increasClickedNumber(e.currentTarget.dataset.buttonid));
+  }
+
+  handleAddButton = (e) => {
+    this.props.dispatch(addNewButton())
   }
 
   render() {
     const { buttons } = this.props;
-    console.log(buttons);
     return (
       <div class='container'>
-
-        <button
-          data-buttonid="0"
-          onClick={this.handleButtonClick}
-        >
-          Button clicked {buttons[0].numberOfClicks} times
-        </button>
-
-        <button
-          data-buttonid="1"
-          onClick={this.handleButtonClick}
-        >
-          Button clicked {buttons[1].numberOfClicks} times
-        </button>
-
-        <button
-          data-buttonid="2"
-          onClick={this.handleButtonClick}
-        >
-          Button clicked {buttons[2].numberOfClicks} times
-        </button>
+        <button onClick={this.handleAddButton}>Add New Button</button>
+        <div className="buttons">
+          {
+            buttons.map((button, i)=>{
+              return (
+                <button
+                  data-buttonid={i}
+                  key={i}
+                  onClick={this.handleButtonClick}
+                  >
+                  Button clicked {buttons[i].numberOfClicks} times
+                </button>
+              )
+            })
+          }
+        </div>
 
       </div>
     )
